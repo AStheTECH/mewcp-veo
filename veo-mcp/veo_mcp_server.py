@@ -12,8 +12,14 @@ from veo_mcp.tools import register_tools
 configure_logging()
 logger = logging.getLogger("veo-mcp-server")
 
-mcp = FastMCP("CL Vertex AI Veo MCP Server")
+mcp = FastMCP(
+    "MewCP Vertex AI Veo MCP Server",
+    # stateless_http=True,
+)
 register_tools(mcp)
+
+# Expose ASGI app for hosting platform's (e.g. Vercel) Python runtime.
+app = mcp.http_app(path="/mcp", transport="streamable-http", stateless_http=True)
 
 
 if __name__ == "__main__":
